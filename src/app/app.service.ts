@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
-import { Observable } from "rxjs";
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +15,6 @@ export class AppService {
     let formData = new FormData();
     formData.append("files", files[0]);
     formData.append("files", files[1]);
-
-    let params = new HttpParams();
-
-    const options = {
-      params: params,
-      reportProgress: true,
-    };
 
     this.http.post(this.url, formData)
       .subscribe(res => {
