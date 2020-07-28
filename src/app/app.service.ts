@@ -9,13 +9,13 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  private url: string = "http://localhost:3000/upload";
+  private url: string = 'http://localhost:3000/upload';
 
-  uploadFiles(files: string[]): Observable<HttpEvent<any>> {
+  uploadFiles(files: string[]) {
 
     let formData = new FormData();
-    formData.append("files[]", files[0]);
-    formData.append("files[]", files[1]);
+    formData.append("files", files[0]);
+    formData.append("files", files[1]);
 
     let params = new HttpParams();
 
@@ -24,7 +24,10 @@ export class AppService {
       reportProgress: true,
     };
 
-    const req = new HttpRequest('POST', this.url, formData, options);
-    return this.http.request(req);
+    this.http.post(this.url, formData)
+      .subscribe(res => {
+        console.log(res);
+        alert('Uploaded Successfully.');
+      })
   }
 }

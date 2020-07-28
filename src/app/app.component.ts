@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AppService } from './app.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ComponentLoaderFactory } from 'angular-bootstrap-md/lib/free/utils/component-loader/component-loader.factory';
 
 @Component({
   selector: 'app-root',
@@ -28,13 +27,10 @@ export class AppComponent {
     for (var i = 0; i < event.target.files.length; i++) {
       this.files.push(event.target.files[i]);
     }
-
-    console.log(this.files);
   }
 
   // Upload files to back service
   launchMrRobot() {
-    console.log(this.files);
     this.appService.uploadFiles(this.files);
   }
 }
