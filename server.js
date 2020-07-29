@@ -32,23 +32,43 @@ app.listen(port, () =>
 );
 
 app.get('/consummed-battery', async (req, res) => {
-  new Apicall().getConsummedBattery();
+  try {
+    new Apicall().getConsummedBattery();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 app.get('/engine-status', async (req, res) => {
-  new Apicall().getEngineStatus();
+  try {
+    new Apicall().getEngineStatus();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 app.get('/start-mesuring', async (req, res) => {
-  new Apicall().putStartMesuring();
+  try {
+    new Apicall().putStartMesuring();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 app.get('/robot-status', async (req, res) => {
-  new Apicall().getRobotStatus();
+  try {
+    new Apicall().getRobotStatus();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 app.get('/robot-deplacement', async (req, res) => {
-  new Apicall().putRobotDeplacement();
+  try {
+    new Apicall().putRobotDeplacement();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 app.post('/upload', async (req, res) => {
