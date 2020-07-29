@@ -133,6 +133,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "EcoTree"
+    }
+  },
+  "defaultProject": "EcoTree",
+  "cli": {
+    "analytics": "95f0dc56-3f9a-4bcb-a43b-76458d6ab974"
+  }
 }

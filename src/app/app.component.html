@@ -34,7 +34,7 @@
     </ul>
 
     <br>
-    <button type="button" class="btn btn-primary" (click)="launchMrRobot()">
+    <button type="button" class="btn btn-primary" (click)="launchMrRobot()" [disabled]="f.files.untouched || f.files.invalid">
       <i class="fas fa-truck-monster pr-2" aria-hidden="true"></i>Lancer l'exécution !
     </button>
   </form>
