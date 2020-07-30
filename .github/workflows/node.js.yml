@@ -29,4 +29,5 @@ jobs:
     - run: npm run build --if-present
     - name: OWASP ZAP Baseline Scan
       uses: zaproxy/action-baseline@v0.3.0
-
+      with:
+        target: './dist/EcoTree'
