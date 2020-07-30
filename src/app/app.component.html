@@ -24,6 +24,7 @@
     <br>
     <div *ngIf="f.files.touched && f.files.invalid" class="alert alert-danger">
       <div *ngIf="f.files.errors.required">Les fichiers sont obligatoires.</div>
+      <div *ngIf="f.files.errors?.length">Le nombre de fichiers doit être de 2.</div>
     </div>
     <ul *ngIf="f.files.touched && f.files.valid">
       <li *ngFor="let file of files">

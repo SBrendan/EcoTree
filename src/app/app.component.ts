@@ -24,8 +24,13 @@ export class AppComponent {
   }
 
   onFileChange(event) {
-    for (var i = 0; i < event.target.files.length; i++) {
-      this.files.push(event.target.files[i]);
+    this.files = []; // reset array
+    if (event.target.files.length === 2) {
+      for (var i = 0; i < event.target.files.length; i++) {
+        this.files.push(event.target.files[i]);
+      }
+    } else {
+      this.f.files.setErrors({ length: true });
     }
   }
 
