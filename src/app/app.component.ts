@@ -30,7 +30,7 @@ export class AppComponent {
       if (this.robotRunning) {
         this.appService.getLastBattery().then(res => { this.lastBattery = res.result })
       }
-    }, 1000);
+    }, 180000);
   }
 
   onFileChange(event) {
