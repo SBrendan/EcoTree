@@ -26,11 +26,12 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    this.lastBattery = setInterval(() => {
-      if (this.robotRunning) {
-        this.appService.getLastBattery().then(res => { this.lastBattery = res.result })
-      }
-    }, 180000);
+    // Battery level real time (wip)
+    // this.lastBattery = setInterval(() => {
+    //   if (this.robotRunning) {
+    //     this.appService.getLastBattery().then(res => { this.lastBattery = res.result })
+    //   }
+    // }, 180000);
   }
 
   onFileChange(event) {
