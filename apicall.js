@@ -6,6 +6,7 @@ const path = require('path');
 class Apicall {
 
   constructor() {
+    console.log("Apicall start");
   }
 
   // Désactive la vérification SSL auto-signé
@@ -41,7 +42,7 @@ class Apicall {
   }
 
   // Création d'une méthode permettant au robot de lancer la mesure
-  putStartMesuring(idRobot) {
+  async putStartMesuring(idRobot) {
     // On démarre le robot, ensuite le robot fait ça mesure puis se remet en starting
     // ID DE ROBOT
     axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/401', { id: idRobot, content: 'STARTING' }, { httpsAgent: this.agent() }).then(resp => {
@@ -52,25 +53,30 @@ class Apicall {
   }
 
   // Retourne le status du robot = STARTING, IN_PROGRESS, READY
-  getRobotStatus() {
-    axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/401', { httpsAgent: this.agent() }).then(resp => {
-      console.log(resp.data.content);
-    }).catch(function (error) {
+  async getRobotStatus() {
+    await  axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/401', { httpsAgent: this.agent() }).then(resp => resp.data.content)
+      .catch(function (error) {
       console.log("Error : " + error)
     });
   }
 
   // Création d'une méthode permettant de donner une suite d'action au robot (Déplacement)
   // "content": "0.0,0.0"
-  putRobotDeplacement(x, y) {
-    var coordonnes = x + "," + y;
-    axios.put('http://omega-community.fr:8080/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => {
-      console.log(resp.data.content);
-    }).catch(function (error) {
+  async putRobotDeplacement(x, y) {
+    let coordonnes = x + "," + y;
+    await axios.put('https://omega-community.fr:8080/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => resp.data.content)
+    .catch(function(error) {
       console.log("Error : " + error)
     });
 
   }
-}
 
+  // Récupère le temps restant avant la fin de la mesure
+  async getRemainingTime() {
+    await axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/402', { httpsAgent: this.agent() }).then(resp => resp.data.content)
+      .catch(function (error) {
+      console.log("Error : " + error)
+    });
+  }
+}
 module.exports = Apicall;

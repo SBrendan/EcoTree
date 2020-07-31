@@ -9,6 +9,8 @@ const https = require('https');
 const _ = require('lodash');
 
 const Apicall = require('./apicall');
+const Actions = require('./actions');
+
 
 const app = express();
 
@@ -107,15 +109,22 @@ app.post('/upload', async (req, res) => {
                 });
             });
 
-            //return response
-            res.send({
-                status: true,
-                message: 'Files are uploaded',
-                data: data
-            });
-        }
-    } catch (err) {
-        res.status(500).send(err);
+      //return response
+      res.send({
+        status: true,
+        message: 'Files are uploaded',
+        data: data
+      });
     }
+
+    try {
+      new Actions().cheminSansObstacle();
+    }
+    catch (err){
+      res.status(500).send(err);
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
