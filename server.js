@@ -31,21 +31,18 @@ const port = process.env.PORT || 3000;
 
 var options = {
     secureProtocol: 'TLSv1_2_method',
-    cert: fs.readFileSync(__dirname + '/ssl/ca.crt'),
+    key: fs.readFileSync(__dirname + '/ssl/client.key'),
+    cert: fs.readFileSync(__dirname + '/ssl/client.crt'),
     pfx: fs.readFileSync(__dirname + '/ssl/client.p12'),
     passphrase: 'changeit',
-    rejectUnauthorized: false,
+    rejectUnauthorized: false
 };
 
 https.createServer(options, app).listen(port, function () {
     console.log("Express server listening on port " + port);
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
-
-app.get('/consummed-battery', async (req, res) => {
+app.get('/consummed-battery', (req, res) => {
     try {
         new Apicall().getConsummedBattery();
     } catch (err) {
@@ -53,18 +50,13 @@ app.get('/consummed-battery', async (req, res) => {
     }
 });
 
-app.get('/engine-status', async (req, res) => {
+app.get('/engine-status', (req, res) => {
     try {
-        axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/101').then(resp => {
-            console.log(resp.data.content);
-        }).catch(function (error) {
-            console.log("Error : " + error)
-        });
+        new Apicall().getEngineStatus();
     } catch (err) {
         res.status(500).send(err);
     }
 });
-
 
 app.get('/start-mesuring', async (req, res) => {
     try {
