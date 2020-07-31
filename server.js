@@ -3,22 +3,24 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const axios = require('axios');
+const fs = require('fs');
+const https = require('https');
 const _ = require('lodash');
 
 const Apicall = require('./apicall');
-
 
 const app = express();
 
 // enable files upload
 app.use(fileUpload({
-  createParentPath: true
+    createParentPath: true
 }));
 
 //add other middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Allow public access to uploaded file
@@ -27,83 +29,93 @@ app.use(express.static('uploads'));
 //start app
 const port = process.env.PORT || 3000;
 
-app.listen(port, () =>
-  console.log(`App is listening on port ${port}.`)
-);
+var options = {
+    secureProtocol: 'TLSv1_2_method',
+    key: fs.readFileSync(__dirname + '/ssl/client.key'),
+    cert: fs.readFileSync(__dirname + '/ssl/client.crt'),
+    pfx: fs.readFileSync(__dirname + '/ssl/client.p12'),
+    passphrase: 'changeit',
+    rejectUnauthorized: false
+};
 
-app.get('/consummed-battery', async (req, res) => {
-  try {
-    new Apicall().getConsummedBattery();
-  } catch (err) {
-    res.status(500).send(err);
-  }
+https.createServer(options, app).listen(port, function () {
+    console.log("Express server listening on port " + port);
 });
 
-app.get('/engine-status', async (req, res) => {
-  try {
-    new Apicall().getEngineStatus();
-  } catch (err) {
-    res.status(500).send(err);
-  }
+app.get('/consummed-battery', (req, res) => {
+    try {
+        new Apicall().getConsummedBattery();
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+app.get('/engine-status', (req, res) => {
+    try {
+        new Apicall().getEngineStatus();
+    } catch (err) {
+        res.status(500).send(err);
+    }
 });
 
 app.get('/start-mesuring', async (req, res) => {
-  try {
-    new Apicall().putStartMesuring();
-  } catch (err) {
-    res.status(500).send(err);
-  }
+    try {
+        new Apicall().putStartMesuring();
+    } catch (err) {
+        res.status(500).send(err);
+    }
 });
 
 app.get('/robot-status', async (req, res) => {
-  try {
-    new Apicall().getRobotStatus();
-  } catch (err) {
-    res.status(500).send(err);
-  }
+    try {
+        new Apicall().getRobotStatus();
+    } catch (err) {
+        res.status(500).send(err);
+    }
 });
 
 app.get('/robot-deplacement', async (req, res) => {
-  try {
-    new Apicall().putRobotDeplacement();
-  } catch (err) {
-    res.status(500).send(err);
-  }
+    try {
+        new Apicall().putRobotDeplacement();
+    } catch (err) {
+        res.status(500).send(err);
+    }
 });
 
 app.post('/upload', async (req, res) => {
-  try {
-    if (!req.files) {
-      res.send({
-        status: false,
-        message: 'No file uploaded'
-      });
-    } else {
-      let data = [];
+    try {
+        if (!req.files) {
+            res.send({
+                status: false,
+                message: 'No file uploaded'
+            });
+        } else {
+            let data = [];
 
-      //loop all files
-      _.forEach(_.keysIn(req.files.files), (key) => {
-        let file = req.files.files[key];
+            //loop all files
+            _.forEach(_.keysIn(req.files.files), (key) => {
+                let file = req.files.files[key];
 
-        //move file to uploads directory
-        file.mv('./uploads/' + file.name);
+                //move file to uploads directory
+                file.mv('./uploads/' + file.name);
 
-        //push file details
-        data.push({
-          name: file.name,
-          mimetype: file.mimetype,
-          size: file.size
-        });
-      });
+                //push file details
+                data.push({
+                    name: file.name,
+                    mimetype: file.mimetype,
+                    size: file.size
+                });
+            });
 
-      //return response
-      res.send({
-        status: true,
-        message: 'Files are uploaded',
-        data: data
-      });
+            //return response
+            res.send({
+                status: true,
+                message: 'Files are uploaded',
+                data: data
+            });
+        }
+    } catch (err) {
+        res.status(500).send(err);
     }
-  } catch (err) {
-    res.status(500).send(err);
-  }
 });
+
