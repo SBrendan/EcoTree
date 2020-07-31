@@ -23,7 +23,7 @@ class Actions {
           new Apicall().getRemainingTime().then(function (result) {
             console.log('remainingTime');
             console.log(result);
-            _.sleepMs(result);
+            this.sleepMs(result);
           });
         });
       });

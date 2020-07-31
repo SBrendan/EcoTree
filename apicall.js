@@ -69,6 +69,14 @@ class Apicall {
       console.log("Error : " + error)
     });
   }
+
+  async getRemainingTime() {
+    await axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/402', { httpsAgent: this.agent() }).then(resp => { return resp.data.content})
+      .catch(function (error) {
+        console.log("Error : " + error)
+      });
+
+  }
 }
 
 module.exports = Apicall;
