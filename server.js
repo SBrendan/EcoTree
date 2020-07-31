@@ -33,8 +33,6 @@ var options = {
     secureProtocol: 'TLSv1_2_method',
     key: fs.readFileSync(__dirname + '/ssl/client.key'),
     cert: fs.readFileSync(__dirname + '/ssl/client.crt'),
-    pfx: fs.readFileSync(__dirname + '/ssl/client.p12'),
-    passphrase: 'changeit',
     rejectUnauthorized: false
 };
 
