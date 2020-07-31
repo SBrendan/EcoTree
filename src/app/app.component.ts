@@ -11,6 +11,8 @@ export class AppComponent {
   constructor(private appService: AppService) { }
 
   title = 'EcoTree';
+  robotRunning = false;
+  lastBattery = null;
 
   @Input() newMap: string = '';
   @Input() files: string[] = [];
@@ -36,6 +38,7 @@ export class AppComponent {
 
   // Upload files to back service
   launchMrRobot() {
+    this.robotRunning = true;
     this.appService.uploadFiles(this.files);
   }
 }

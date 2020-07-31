@@ -8,7 +8,7 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  private url: string = 'https://localhost:3000/upload';
+  private url: string = 'https://localhost:3000/';
 
   uploadFiles(files: string[]) {
 
@@ -16,10 +16,16 @@ export class AppService {
     formData.append("files", files[0]);
     formData.append("files", files[1]);
 
-    this.http.post(this.url, formData)
+    this.http.post(this.url + "upload", formData)
       .subscribe(res => {
         console.log(res);
         alert('Uploaded Successfully.');
       })
+  }
+
+  getLastBattery(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.url + "consummed-battery").subscribe(res => { resolve(res) })
+    });
   }
 }

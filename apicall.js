@@ -62,8 +62,8 @@ class Apicall {
   // Création d'une méthode permettant de donner une suite d'action au robot (Déplacement)
   // "content": "0.0,0.0"
   putRobotDeplacement(x, y) {
-    var coordonnes = x + "," + y;
-    return axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => {
+    var coordonnes = x + ".0" + "," + y + ".0";
+    return axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/302', { id: 302, content: coordonnes, name: "Destination Location", status: "ACTIVE"}, { httpsAgent: this.agent() }).then(resp => {
       return resp.data.content;
     }).catch(function (error) {
       console.log("Error : " + error)
