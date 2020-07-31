@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 const Apicall = require('./apicall');
 class Actions {
 
@@ -8,18 +9,18 @@ class Actions {
 
 
   cheminSansObstacle() {
-    let coordActuelle = {"x": 0, "y": 0};
+    let coordActuelle = { "x": 0, "y": 0 };
     let coordjson = this.fileToJson();
-    let coordDesti = {"x": 0, "y": 0};
+    let coordDesti = { "x": 0, "y": 0 };
     coordjson.forEach((line) => {
       coordDesti.x = line.x - coordActuelle.x;
       coordDesti.y = line.y - coordActuelle.y;
       console.log(coordDesti);
-      new Apicall().putRobotDeplacement(coordDesti.x.toString(), coordDesti.y.toString()).then(robotDep => {
-       coordActuelle.x = line.x;
+      new Apicall().putRobotDeplacement(coordDesti.x.toString(), coordDesti.y.toString()).then(_ => {
+        coordActuelle.x = line.x;
         coordActuelle.y = line.y;
-        new Apicall().putStartMesuring(401).then(startMesur => {
-          let remainingTime = new Apicall().getRemainingTime().then(function(result){
+        new Apicall().putStartMesuring(401).then(_ => {
+          new Apicall().getRemainingTime().then(function (result) {
             console.log('remainingTime');
             console.log(result);
             this.sleepMs(result);
@@ -27,31 +28,34 @@ class Actions {
         });
       });
     });
-    let consumed = new Apicall().getConsummedBattery().then(function(consumedBattery){
+    new Apicall().getConsummedBattery().then(function (consumedBattery) {
       console.log('consumedBattery');
       console.log(consumedBattery);
       console.log('coordActuelle');
       console.log(coordActuelle);
-  });
+    });
   }
 
   fileToJson() {
-    try {
-      let array = [];
-      // read contents of the file
-      const data = fs.readFileSync('./uploads/file.txt', 'UTF-8');
-      // split the contents by new line
-      const lines = data.split(/\r?\n/);
-      // print all lines
-      lines.forEach((line) => {
-        let x = parseInt(line.split(' ')[0]);
-        let y = parseInt(line.split(' ')[1]);
-        array.push({'x':x, 'y': y});
+    let array = [];
+    // read contents of the file
+    fs.readFile('./uploads/file.txt', { encoding: 'utf8', flag: 'r' },
+      function (err, data) {
+        if (err)
+          console.log(err);
+        else {
+          // split the contents by new line
+          const lines = data.split(/\r?\n/);
+          // print all lines
+          lines.forEach((line) => {
+            let x = parseInt(line.split(' ')[0]);
+            let y = parseInt(line.split(' ')[1]);
+            array.push({ 'x': x, 'y': y });
+          });
+        }
       });
-      return array
-    } catch (err) {
-      console.error(err);
-    }
+
+    return array
   }
 
   sleepMs(milliseconds) {

@@ -109,22 +109,24 @@ app.post('/upload', async (req, res) => {
                 });
             });
 
-      //return response
-      res.send({
-        status: true,
-        message: 'Files are uploaded',
-        data: data
-      });
+            //return response
+            res.send({
+                status: true,
+                message: 'Files are uploaded',
+                data: data
+            });
+        }
+
+        
+
+    } catch (err) {
+        res.status(500).send(err);
     }
 
     try {
-      new Actions().cheminSansObstacle();
+        new Actions().cheminSansObstacle();
+    } catch (error) {
+        res.status(500).send(error);
     }
-    catch (err){
-      res.status(500).send(err);
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
 });
 
