@@ -11,41 +11,41 @@ class Actions {
     // let coordjson = this.fileToJson();
     let coordjson = [];
 
-    this.fileToJson().then(res => {
-      coordjson = res;
+    return new Promise((resolve, reject) => {
+      this.fileToJson().then(res => {
+        coordjson = res;
 
-      let coordDesti = { "x": 0, "y": 0 };
+        let coordDesti = { "x": 0, "y": 0 };
 
-      coordjson.forEach((line) => {
-        coordDesti.x = line.x - coordActuelle.x;
-        coordDesti.y = line.y - coordActuelle.y;
-        console.log(coordDesti);
-        new Apicall().putRobotDeplacement(coordDesti.x.toString(), coordDesti.y.toString()).then(_ => {
-          coordActuelle.x = line.x;
-          coordActuelle.y = line.y;
-          new Apicall().putStartMesuring(401).then(_ => {
-            new Apicall().getRemainingTime().then(function (result) {
-              console.log('remaining time', result);
+        coordjson.forEach((line) => {
+          coordDesti.x = line.x - coordActuelle.x;
+          coordDesti.y = line.y - coordActuelle.y;
+          console.log(coordDesti);
+          new Apicall().putRobotDeplacement(coordDesti.x.toString(), coordDesti.y.toString()).then(_ => {
+            coordActuelle.x = line.x;
+            coordActuelle.y = line.y;
+            new Apicall().putStartMesuring().then(_ => {
+              new Apicall().getRemainingTime().then(function (result) {
+                console.log('remaining time', result);
 
-              const date = Date.now();
-              let currentDate = null;
-              do {
-                currentDate = Date.now();
-              } while (currentDate - date < result);
-            });
-          });
+                const date = Date.now();
+                let currentDate = null;
+                do {
+                  currentDate = Date.now();
+                } while (currentDate - date < result);
 
-        }).catch(err => {
-          console.error(err);
-        })
+                new Apicall().getConsummedBattery().then(consumedBattery => {
+                  console.log('consumed battery', consumedBattery);
+                  console.log('coord actuelle', coordActuelle);
+                  resolve(consumedBattery);
+                });
+
+              }).catch(err => { })
+            }).catch(err => { })
+          }).catch(err => { })
+        });
       });
-
-      new Apicall().getConsummedBattery().then(function (consumedBattery) {
-        console.log('consumed battery', consumedBattery);
-        console.log('coord actuelle', coordActuelle);
-        return consumedBattery;
-      });
-    });
+    })
   }
 
   fileToJson() {

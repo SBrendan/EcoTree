@@ -92,7 +92,7 @@ app.get('/robot-deplacement', async (req, res) => {
 app.post('/upload', async (req, res) => {
     try {
         if (!req.files) {
-          res.status(500).send({
+            res.status(500).send({
                 status: false,
                 message: 'No file uploaded'
             });
@@ -114,13 +114,16 @@ app.post('/upload', async (req, res) => {
                 });
             });
 
-          let consumedBattery = new Actions().cheminSansObstacle();
-
-            //return response
-            res.status(200).send({
-                status: true,
-                message: 'Files are uploaded',
-                data: { ...data, consumedBattery }
+            new Apicall().getConsummedBattery().then(oldConsumedBattery => {
+                console.log("old", oldConsumedBattery);
+                new Actions().cheminSansObstacle().then(newConsumedBattery => {
+                    res.status(200).send({
+                        status: true,
+                        message: 'Files are uploaded',
+                        data,
+                        consumedBattery: (newConsumedBattery - oldConsumedBattery)
+                    })
+                });
             });
         }
 

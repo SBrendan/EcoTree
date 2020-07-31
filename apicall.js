@@ -40,10 +40,10 @@ class Apicall {
   }
 
   // Création d'une méthode permettant au robot de lancer la mesure
-  putStartMesuring(idRobot) {
+  putStartMesuring() {
     // On démarre le robot, ensuite le robot fait ça mesure puis se remet en starting
     // ID DE ROBOT
-    return axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/401', { id: idRobot, content: 'STARTING' }, { httpsAgent: this.agent() }).then(resp => {
+    return axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/401', { id: 401, content: 'STARTING' }, { httpsAgent: this.agent() }).then(resp => {
       return resp.data.content;
     }).catch(function (error) {
       console.log("Error : " + error)
@@ -63,15 +63,19 @@ class Apicall {
   // "content": "0.0,0.0"
   putRobotDeplacement(x, y) {
     var coordonnes = x + "," + y;
-    return axios.put('http://omega-community.fr:8080/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => {
+    return axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => {
       return resp.data.content;
     }).catch(function (error) {
       console.log("Error : " + error)
     });
+
   }
 
-  async getRemainingTime() {
-    return axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/402', { httpsAgent: this.agent() }).then(resp => { return resp.data.content })
+  getRemainingTime() {
+    return axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/402', { httpsAgent: this.agent() })
+      .then(resp => {
+        return resp.data.content
+      })
       .catch(function (error) {
         console.log("Error : " + error)
       });
