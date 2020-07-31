@@ -120,8 +120,7 @@ app.post('/upload', async (req, res) => {
             res.status(200).send({
                 status: true,
                 message: 'Files are uploaded',
-                data: data,
-                consumedBattery: consumedBattery
+                data: { ...data, consumedBattery }
             });
         }
 
