@@ -57,4 +57,5 @@ Thumbs.db
 # Ignore all local history of files
 .history
 
-/ssl/*
+# Ignore SSL Certs
+/ssl
