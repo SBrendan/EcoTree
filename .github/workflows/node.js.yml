@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI & Zap Scan
+name: Node.js CI
 
 on:
   push:
@@ -26,9 +26,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm test
-
-    - name: OWASP ZAP Baseline Scan
-      uses: zaproxy/action-baseline@v0.3.0
-      with:
-        target: 'https://sbrendan.github.io/EcoTree/index.html'
       
