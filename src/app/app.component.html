@@ -39,4 +39,9 @@
       <i class="fas fa-truck-monster pr-2" aria-hidden="true"></i>Lancer l'exécution !
     </button>
   </form>
+
+  <br><br>
+  <div class="text-align" *ngIf="robotRunning && lastBattery">
+    Dernière consommation de batterie : <code>{{ lastBattery }} V</code>
+  </div>
 </div>
