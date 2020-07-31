@@ -33,7 +33,9 @@ class Actions {
       console.log(consumedBattery);
       console.log('coordActuelle');
       console.log(coordActuelle);
+      return consumedBattery
     });
+
   }
 
   fileToJson() {
