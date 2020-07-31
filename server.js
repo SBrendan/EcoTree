@@ -44,44 +44,49 @@ https.createServer(options, app).listen(port, function () {
     console.log("Express server listening on port " + port);
 });
 
-app.get('/consummed-battery', (req, res) => {
-    try {
-        new Apicall().getConsummedBattery();
-    } catch (err) {
-        res.status(500).send(err);
-    }
+app.get('/consummed-battery', async (req, res) => {
+    new Apicall().getConsummedBattery()
+        .then(data => {
+            res.status(200).send({ result: data });
+        }).catch(err => {
+            res.status(500).send(err);
+        });
 });
 
 app.get('/engine-status', (req, res) => {
-    try {
-        new Apicall().getEngineStatus();
-    } catch (err) {
-        res.status(500).send(err);
-    }
+    new Apicall().getEngineStatus()
+        .then(data => {
+            res.status(200).send({ result: data });
+        }).catch(err => {
+            res.status(500).send(err);
+        });
 });
 
 app.get('/start-mesuring', async (req, res) => {
-    try {
-        new Apicall().putStartMesuring();
-    } catch (err) {
-        res.status(500).send(err);
-    }
+    new Apicall().putStartMesuring()
+        .then(data => {
+            res.status(200).send({ result: data });
+        }).catch(err => {
+            res.status(500).send(err);
+        });
 });
 
 app.get('/robot-status', async (req, res) => {
-    try {
-        new Apicall().getRobotStatus();
-    } catch (err) {
-        res.status(500).send(err);
-    }
+    new Apicall().getRobotStatus()
+        .then(data => {
+            res.status(200).send({ result: data });
+        }).catch(err => {
+            res.status(500).send(err);
+        });
 });
 
 app.get('/robot-deplacement', async (req, res) => {
-    try {
-        new Apicall().putRobotDeplacement();
-    } catch (err) {
-        res.status(500).send(err);
-    }
+    new Apicall().putRobotDeplacement()
+        .then(data => {
+            res.status(200).send({ result: data });
+        }).catch(err => {
+            res.status(500).send(err);
+        });
 });
 
 app.post('/upload', async (req, res) => {

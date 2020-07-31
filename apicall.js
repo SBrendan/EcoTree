@@ -6,7 +6,6 @@ const path = require('path');
 class Apicall {
 
   constructor() {
-    console.log("Apicall start");
   }
 
   // Désactive la vérification SSL auto-signé
@@ -23,20 +22,17 @@ class Apicall {
   // Création d'une méthode permettant de retourner la consommation énergétique du robot
   // Retourne la valeur de la batterie
   getConsummedBattery() {
-    axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/101', { httpsAgent: this.agent() }).then(resp => {
-      console.log(resp.data.content);
-      return resp.data.content;
-    }).catch(function (error) {
-      console.log("Error : " + error)
-    });
+    return axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/101', { httpsAgent: this.agent() }).then(resp => { return resp.data.content })
+      .catch(function (error) {
+        console.log("Error : " + error)
+      });
   }
 
 
   // Création d'une méthode permettant de connaitre le status du robot (Déplacement)
   // Status = moving, stopped
   getEngineStatus() {
-    axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/201', { httpsAgent: this.agent() }).then(resp => {
-      console.log(resp.data.content);
+    return axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/201', { httpsAgent: this.agent() }).then(resp => {
       return resp.data.content;
     }).catch(function (error) {
       console.log("Error : " + error)
@@ -44,11 +40,10 @@ class Apicall {
   }
 
   // Création d'une méthode permettant au robot de lancer la mesure
-  async putStartMesuring(idRobot) {
+  putStartMesuring(idRobot) {
     // On démarre le robot, ensuite le robot fait ça mesure puis se remet en starting
     // ID DE ROBOT
-    axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/401', { id: idRobot, content: 'STARTING' }, { httpsAgent: this.agent() }).then(resp => {
-      console.log(resp.data.content);
+    return axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/401', { id: idRobot, content: 'STARTING' }, { httpsAgent: this.agent() }).then(resp => {
       return resp.data.content;
     }).catch(function (error) {
       console.log("Error : " + error)
@@ -56,30 +51,24 @@ class Apicall {
   }
 
   // Retourne le status du robot = STARTING, IN_PROGRESS, READY
-  async getRobotStatus() {
-    await  axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/401', { httpsAgent: this.agent() }).then(resp => { return resp.data.content})
-      .catch(function (error) {
+  getRobotStatus() {
+    return axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/401', { httpsAgent: this.agent() }).then(resp => {
+      return resp.data.content;
+    }).catch(function (error) {
       console.log("Error : " + error)
     });
   }
 
   // Création d'une méthode permettant de donner une suite d'action au robot (Déplacement)
   // "content": "0.0,0.0"
-  async putRobotDeplacement(x, y) {
-    let coordonnes = x + "," + y;
-    await axios.put('https://omega-community.fr:8080/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => { return resp.data.content})
-    .catch(function(error) {
-      console.log("Error : " + error)
-    });
-
-  }
-
-  // Récupère le temps restant avant la fin de la mesure
-  async getRemainingTime() {
-    await axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/402', { httpsAgent: this.agent() }).then(resp => { return resp.data.content})
-      .catch(function (error) {
+  putRobotDeplacement(x, y) {
+    var coordonnes = x + "," + y;
+    return axios.put('http://omega-community.fr:8080/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => {
+      return resp.data.content;
+    }).catch(function (error) {
       console.log("Error : " + error)
     });
   }
 }
+
 module.exports = Apicall;
