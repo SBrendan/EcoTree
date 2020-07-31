@@ -25,6 +25,7 @@ class Apicall {
   getConsummedBattery() {
     axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/101', { httpsAgent: this.agent() }).then(resp => {
       console.log(resp.data.content);
+      return resp.data.content;
     }).catch(function (error) {
       console.log("Error : " + error)
     });
@@ -36,6 +37,7 @@ class Apicall {
   getEngineStatus() {
     axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/201', { httpsAgent: this.agent() }).then(resp => {
       console.log(resp.data.content);
+      return resp.data.content;
     }).catch(function (error) {
       console.log("Error : " + error)
     });
@@ -47,6 +49,7 @@ class Apicall {
     // ID DE ROBOT
     axios.put('https://omega-community.fr/ecotree/robiot-api/configurations/401', { id: idRobot, content: 'STARTING' }, { httpsAgent: this.agent() }).then(resp => {
       console.log(resp.data.content);
+      return resp.data.content;
     }).catch(function (error) {
       console.log("Error : " + error)
     });
@@ -54,7 +57,7 @@ class Apicall {
 
   // Retourne le status du robot = STARTING, IN_PROGRESS, READY
   async getRobotStatus() {
-    await  axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/401', { httpsAgent: this.agent() }).then(resp => resp.data.content)
+    await  axios.get('https://omega-community.fr/ecotree/robiot-api/configurations/401', { httpsAgent: this.agent() }).then(resp => { return resp.data.content})
       .catch(function (error) {
       console.log("Error : " + error)
     });
@@ -64,7 +67,7 @@ class Apicall {
   // "content": "0.0,0.0"
   async putRobotDeplacement(x, y) {
     let coordonnes = x + "," + y;
-    await axios.put('https://omega-community.fr:8080/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => resp.data.content)
+    await axios.put('https://omega-community.fr:8080/ecotree/robiot-api/configurations/302', { content: coordonnes }, { httpsAgent: this.agent() }).then(resp => { return resp.data.content})
     .catch(function(error) {
       console.log("Error : " + error)
     });
@@ -73,7 +76,7 @@ class Apicall {
 
   // Récupère le temps restant avant la fin de la mesure
   async getRemainingTime() {
-    await axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/402', { httpsAgent: this.agent() }).then(resp => resp.data.content)
+    await axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/402', { httpsAgent: this.agent() }).then(resp => { return resp.data.content})
       .catch(function (error) {
       console.log("Error : " + error)
     });
