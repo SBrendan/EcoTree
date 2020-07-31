@@ -25,15 +25,6 @@ export class AppComponent {
     return this.form.controls;
   }
 
-  ngOnInit(): void {
-    // Battery level real time (wip)
-    // this.lastBattery = setInterval(() => {
-    //   if (this.robotRunning) {
-    //     this.appService.getLastBattery().then(res => { this.lastBattery = res.result })
-    //   }
-    // }, 180000);
-  }
-
   onFileChange(event) {
     this.files = []; // reset array
     if (event.target.files.length === 2) {
