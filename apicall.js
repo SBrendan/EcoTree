@@ -28,7 +28,7 @@ class Apicall {
   // Création d'une méthode permettant de connaitre le status du robot (Déplacement)
   // Status = moving, stopped
   getEngineStatus() {
-    axios.get('http://omega-community.fr:8080/ecotree/robiot-api/configurations/201', { httpsAgent: this.agent() }).then(resp => {
+    axios.get('https://omega-community.fr:8080/ecotree/robiot-api/configurations/201', { httpsAgent: this.agent() }).then(resp => {
       console.log(resp.data.content);
     }).catch(function(error) {
       console.log("Error : " + error)

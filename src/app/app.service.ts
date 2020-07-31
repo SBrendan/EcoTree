@@ -8,7 +8,7 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  private url: string = 'http://localhost:3000/upload';
+  private url: string = 'https://localhost:3000/upload';
 
   uploadFiles(files: string[]) {
 
